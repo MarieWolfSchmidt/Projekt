@@ -1,3 +1,5 @@
+package BaseGame;
+
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
@@ -93,13 +95,17 @@ public class CheckersView extends JFrame {
 		// The first new panel - the game panel.
 		JPanel panelOne = new JPanel();
 		panelOne.setBackground(Color.WHITE);
-		panelOne.setBounds(6, 72, 400, 400);
+		panelOne.setBounds(6, 72, 401, 401);
 		panelOne.setLayout(null);
 		this.getContentPane().add(panelOne);
 		
 		// Label, bounds and position of text to the first panel.
-		JLabel lblNewLabel = new JLabel("Spilleplade");
-		lblNewLabel.setBounds(17, 39, 278, 125);
+		Grid grid = new Grid();
+        grid.setSize(400, 400);
+        panelOne.add(grid);
+      
+        grid.fillCell(0, 0);
+       
 
 		
 		// The second new panel - the score panel.
