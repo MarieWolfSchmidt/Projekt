@@ -1,31 +1,21 @@
-package BaseGame;
-
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+
+
 public class CheckersView extends JFrame {
 	
 	private CheckersModel checker;
-	 private List<Point> fillCells;
-	 
-	
-	public CheckersView(){
 
+	public CheckersView(){
 		checker = new CheckersModel(this);
 	
-		this.setBounds(100, 100, 650, 500);
-		this.getContentPane().setBackground(Color.GRAY);
+		this.setBounds(60, 60, 1000, 700);
+		this.getContentPane().setBackground(Color.LIGHT_GRAY);
 		this.getContentPane().setLayout(null);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);		
 		menu();
@@ -47,7 +37,7 @@ public class CheckersView extends JFrame {
 		// The initial menu panel initiated at startup and its label.
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(6, 6, 638, 466);
+		panel.setBounds(6, 6, 988, 666);
 		panel.setLayout(null);
 		this.getContentPane().add(panel);
 		
@@ -59,10 +49,10 @@ public class CheckersView extends JFrame {
 		JButton exitButton = new JButton("Exit");
 		
 		// Placement and bounds.
-		lblNewLabel.setBounds(220, 6, 209, 25);
-		newGame.setBounds(250, 69, 155, 48);
-		scoreButton.setBounds(250, 168, 155, 48);
-		exitButton.setBounds(250, 271, 155, 48);
+		lblNewLabel.setBounds(400, 6, 209, 25);
+		newGame.setBounds(400, 70, 209, 100);
+		scoreButton.setBounds(400, 210, 209, 100);
+		exitButton.setBounds(400, 360, 209, 100);
 		
 		// Adding the label and buttons to the panel.
 		panel.add(lblNewLabel);
@@ -80,8 +70,6 @@ public class CheckersView extends JFrame {
 		// Adding the panel to the JFrame.
 		this.getContentPane().add(panel);
 	}
-
-	
 	
 	public void game(){
 		
@@ -95,22 +83,24 @@ public class CheckersView extends JFrame {
 		// The first new panel - the game panel.
 		JPanel panelOne = new JPanel();
 		panelOne.setBackground(Color.WHITE);
-		panelOne.setBounds(6, 72, 401, 401);
+		panelOne.setBounds(6, 72, 600, 600);
 		panelOne.setLayout(null);
 		this.getContentPane().add(panelOne);
 		
 		// Label, bounds and position of text to the first panel.
-		Grid grid = new Grid();
-        grid.setSize(400, 400);
-        panelOne.add(grid);
-      
-        grid.fillCell(0, 0);
-       
-
+		//JLabel lblNewLabel = new JLabel("Spilleplade");
+		//lblNewLabel.setBounds(17, 39, 278, 125);
 		
-		// The second new panel - the score panel.
+		CoreControl grid =new CoreControl();
+		grid.fillCell();
+		grid.setSize(600, 600);
+		panelOne.add(grid);
+		panelOne.setBackground(Color.WHITE);
+		
+		
+		//The second new panel - the score panel.
 		JPanel panelTwo = new JPanel();
-		panelTwo.setBounds(409, 6, 235, 466);
+		panelTwo.setBounds(610, 6, 385, 666);
 		panelTwo.setLayout(null);
 		this.getContentPane().add(panelTwo);
 		
@@ -119,7 +109,7 @@ public class CheckersView extends JFrame {
 		JLabel lblDam = new JLabel("DAM");	
 		
 		// Placement and bounds.
-		backButton.setBounds(46, 414, 146, 29);
+		backButton.setBounds(46, 630, 200, 29);
 		lblDam.setBounds(106, 6, 61, 16);	
 		
 		// Adding the label and buttons to the panel.
@@ -128,11 +118,16 @@ public class CheckersView extends JFrame {
 			
 		// Adding actionslisteners.
 		CheckersController checkList = new CheckersController(checker);
-		backButton.addActionListener(checkList);	
+		backButton.addActionListener(checkList);
 			
 		// Adding the panel to the JFrame.
 		this.getContentPane().add(panelOne);
 		this.getContentPane().add(panelTwo);			
 	}
-	  
+	  public void fillCell() {
+          //fillCells=new Point();
+          repaint();
+          
+      }
+	
 }
