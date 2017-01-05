@@ -1,3 +1,5 @@
+
+
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JButton;
@@ -10,10 +12,11 @@ import javax.swing.JPanel;
 public class CheckersView extends JFrame {
 	
 	private CheckersModel checker;
-
-	public CheckersView(){
-		checker = new CheckersModel(this);
+	private int n;
 	
+	public CheckersView(int size){
+		this.n=size;
+		checker = new CheckersModel(this);
 		this.setBounds(60, 60, 1000, 700);
 		this.getContentPane().setBackground(Color.LIGHT_GRAY);
 		this.getContentPane().setLayout(null);
@@ -26,6 +29,7 @@ public class CheckersView extends JFrame {
 	public void showIt(String title){
 		 this.setTitle(title);
 		 this.setVisible(true);
+		
 	}
 	
 	public void menu() {
@@ -82,6 +86,7 @@ public class CheckersView extends JFrame {
 		
 		// The first new panel - the game panel.
 		JPanel panelOne = new JPanel();
+		panelOne.setBackground(Color.WHITE);
 		panelOne.setBounds(6, 72, 600, 600);
 		panelOne.setLayout(null);
 		this.getContentPane().add(panelOne);
@@ -90,10 +95,12 @@ public class CheckersView extends JFrame {
 		//JLabel lblNewLabel = new JLabel("Spilleplade");
 		//lblNewLabel.setBounds(17, 39, 278, 125);
 		
-		CoreControl grid =new CoreControl();
+		CoreControl grid =new CoreControl(n);
 		grid.fillCell();
-		grid.setSize(600, 600);
+		grid.setSize(600,600);
 		panelOne.add(grid);
+		panelOne.setBackground(Color.WHITE);		
+		
 		
 		//The second new panel - the score panel.
 		JPanel panelTwo = new JPanel();

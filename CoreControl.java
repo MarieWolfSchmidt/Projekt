@@ -10,18 +10,25 @@ import javax.swing.JComponent;
 
 public class CoreControl extends JComponent implements MouseListener, MouseMotionListener {
 
-	public int n=8;
-	public int r=600;
-	public int m=r/n;
-	public int l=2*m;
-	public int str=(m/3)*2;
-	public int p1=m/2-(str/2);
-	public int p11=m/2-(str/2);
-	public int p2=600-m/2-(str/2);
+	private int r;
+	private int m;
+	private int l;
+	private int str;
+	private int p1;
+	private int p11;
+	private int p2;
+	
 
-        public CoreControl() {
-        	//addMouseMotionListener(this);
+        public CoreControl(int n) {
+        	this.r=600;
+        	this.m=r/n;
+        	this.l=2*m;
+        	this.str=(m/3)*2;
+        	this.p1=m/2-(str/2);
+        	this.p11=m/2-(str/2);
+        	this.p2=600-m/2-(str/2);   	
         }
+        
         
         @Override
         protected void paintComponent(Graphics g) {
@@ -46,18 +53,16 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
             g.setColor(Color.BLACK);
             g.drawRect(0, 0, 600, 600);
             
-            for (int i = 0; i <= 600; i += m) {
+            for (int i = 0; i < 600; i += m) {
                 g.drawLine(i, 0, i, 600);
             }
 
-            for (int i = 0; i <= 600; i += m) {
+            for (int i = 0; i < 600; i += m) {
                 g.drawLine(0, i, 600, i);
             }
             
-           cirkelred(g);
-           cirkelblack(g);
-           
-            
+            cirkelred(g);
+            cirkelblack(g); 	
         }
         
         public void cirkelred(Graphics c){
@@ -71,14 +76,13 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
              addMouseMotionListener(this);
         }
        
-        
-        
+
         public void fillCell() {
             repaint();
             
         }
-
-		@Override
+        
+        @Override
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
 			
@@ -120,4 +124,8 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
 			// TODO Auto-generated method stub
 			
 		}
-}
+			
+		}
+
+
+   
