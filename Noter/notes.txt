@@ -1,0 +1,92 @@
+Notes d.2/1-2017:
+
+We begun the day by discussing different paths we could take regarding the design of the program. In particular we discussed different options regarding the GUI. None of the group members has been working on a MVC project before so that kinda leaves a big gaping hole when it comes to overview. 
+
+We discussed colours for the board and pieces. We thought it was good to get the small details out of the way. 
+
+For the data structure of the board we decided on a 2D array structure. This will allow for easy manipulation of the individual fields on the board. The initial idea was to set all the individual fields to false and when a piece lands on a field the field is set to true, but it’s difficult to tell which is which then, and therefore our next and current idea is to let them be denoted by a number instead - like 0,1,2 - for either an empty field or one of the individual pieces. 
+
+We have been discussing a class structure and so far have decided on; 
+Driver.
+Board.
+GUI.
+Player.
+Menu -> Settings, Player, Exit.
+
+From here: 
+
+Design GUI - both the Menu and the board. 
+Figure out how to code in the MVC paradigm. 
+Design classes and it’s functions. 
+
+Doing considerations on the Panel or Panels - can’t really figure out if it’s a good idea to make two different panels or if we should just try and make it in one, and distinguish the two, with a boolean in the constructor. It kinda depends on how big the ‘checkersGamePanel’ and ‘checkersStartPanel’ is gonna be. If they get out of hand it would be nice to separate them but it’s difficult to figure out a way to swap the panels if they aren’t of the same type. 
+
+We should consider to make the upper bound much smaller than 100 or whatever many it was. Something like 12 maybe even just 10 and here we can refer to the fact that pros play with 10 and the complexity is high enough at that point.
+
+Should consider using formattedtextfields for the n field on the first menu.
+
+It seems difficult to implement a version where the panels change, because the Frame object isn’t reachable. Therefore it might make sense to make a window popup when the application launches and when the number n is submitted a new window is opened. Upon closing the second window only that window should close but when the main window is closed they should all close. 
+
+
+——————
+
+
+Notes d.3/1-2017:
+
+The group has been talking a lot about the MVC-‘framework’. We would denote it as a theory that is highly applicable in our case yet still we are aware that sacrifices might have to be made. We will though, as much as we are allowed, try to use the framework. The program will be divided into a model, view and a controller class. Our view will be handling the GUI, the model all the grunt datahandling work and the controller class will be listening for the events the GUI should react to. 
+
+Today, again, we discussed how the data (the model) will interact with the GUI (the view). We were thinking about making a 2D array but…
+
+Michelle had been working on a GUI from home and Mads had been looking at the MVC framework. We combined Michelles work with Mads’ and ended out with a well functioning GUI working from 4 different classes. One class handles the driver, one the view, one the controller and one the model. 
+
+Now we are working on establishing a simple game board and adding pieces to it. We are discussing drawing up a board using some sort of a container and from there, add one piece using 4 different pictures. 
+
+Things we need to know:
+Layouts.
+Containers for things like panels.
+Panel arrays.
+Looping over panel arrays.
+
+Maybe we can make a class called pieces that just holds information about them - like where they are and where they can move etc. 
+
+Ændre spilledepladen, så den er en funktion, bare ændre game(), så den tager et array - så sender vi et spillebriks array med til den og derefter tegner vi boardet med de brikker, der er i arrayet. 
+Sådan kan vi tegne et board. 
+
+
+——————
+
+
+Notes d.4/1-2017:
+
+We are giving it one last try with the array panels. The thought is that the panel array will hold all the individual squares and therefore it’s easy to manipulate the board, because each single square have many individual options, things like setBackgroundColor etc. 
+The other advantage of this is that it is easy to make an array consisting of ints to denote the state that each square of the board is in. Say that 0 denotes no piece and 1 denotes a piece, then a double for loop would assign all the different pieces to the correct squares. 
+
+We are also working on a new solution drawing the board with fillRect() and drawing lines. between the different squares to try and see if this is an easier solution. 
+The board is done and the standard GUI is working as intended. 
+To begin with we talked about making buttons for restart the game, give up and so forth. We might still do that but we will indeed make a drop down menu for exiting and so forth. 
+
+
+So we have decided to work on two games at once until we get one of them to work. Really smart.
+
+
+
+
+
+———
+
+
+
+Notes d.5/1-2017:
+
+So far we have tried two different strategies for structuring our game and we have chosen to go with the second one.
+
+The first one was based on a JPanel array attached to another JPanel with a GridLayout. This whole thing was then attached to the JFrames getContentPane(). This allowed for very easy manipulation of the individual fields with constant acces to them and the ability to loop over the array and change the current game state by using another int array that would represent the boards state ie. where there would be placed pieces, where there already were some and such.
+The thought was that it would allow us to do all the board manipulation using fairly simpel for-loops either initiating the game or changing the current state of the game. It would also allow for easy keeping of scores, current state etc. But when it came to the actual look and feel of the game, which we do consider important, when it comes to games, it just didn’t have it. The reason for this was that our idea was to make the individual fields (panels) switch to being white or black when they got clicked, then we wanted the ‘open’ fields to highlight themselves and that field would then flip and show a piece, when it clicked. This cause some issues visually, because it didn’t have a very fluent look and feel. All the data manipulation was easy using the solution but it just didn’t give us the right result back when it came to look and feel. 
+
+The second one is based on using graphics to paint the board, the pieces and everything else on the board. This do make it a little bit harder with the datamanipulation but it makes it easy to give it a great look and great feel. Right now we have a functioning board, piece and the movement of them. How we will handle the data remains to be seen. 
+
+
+
+
+
+
