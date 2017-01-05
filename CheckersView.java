@@ -82,7 +82,6 @@ public class CheckersView extends JFrame {
 		
 		// The first new panel - the game panel.
 		JPanel panelOne = new JPanel();
-		panelOne.setBackground(Color.WHITE);
 		panelOne.setBounds(6, 72, 600, 600);
 		panelOne.setLayout(null);
 		this.getContentPane().add(panelOne);
@@ -95,8 +94,6 @@ public class CheckersView extends JFrame {
 		grid.fillCell();
 		grid.setSize(600, 600);
 		panelOne.add(grid);
-		panelOne.setBackground(Color.WHITE);
-		
 		
 		//The second new panel - the score panel.
 		JPanel panelTwo = new JPanel();
