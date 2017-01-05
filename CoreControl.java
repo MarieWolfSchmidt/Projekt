@@ -1,6 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -10,25 +10,21 @@ import javax.swing.JComponent;
 
 public class CoreControl extends JComponent implements MouseListener, MouseMotionListener {
 
-	private int r;
-	private int m;
-	private int l;
-	private int str;
-	private int p1;
-	private int p11;
-	private int p2;
-	
+	public int n=8;
+	public int r=600;
+	public int m=r/n;
+	public int l=2*m;
+	public int str=(m/3)*2;
+	public Point p1=new Point(m/2-(str/2), m/2-(str/2));
+	//public int p1=m/2-(str/2);
+	public Point p2=new Point(600-m/2-(str/2),600-m/2-(str/2));
+	public int p11=m/2-(str/2);
+	//public int p2=600-m/2-(str/2);
+	public int i;
 
-        public CoreControl(int n) {
-        	this.r=600;
-        	this.m=r/n;
-        	this.l=2*m;
-        	this.str=(m/3)*2;
-        	this.p1=m/2-(str/2);
-        	this.p11=m/2-(str/2);
-        	this.p2=600-m/2-(str/2);   	
+        public CoreControl() {
+        	//addMouseMotionListener(this);
         }
-        
         
         @Override
         protected void paintComponent(Graphics g) {
@@ -53,36 +49,47 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
             g.setColor(Color.BLACK);
             g.drawRect(0, 0, 600, 600);
             
-            for (int i = 0; i < 600; i += m) {
+            for (int i = 0; i <= 600; i += m) {
                 g.drawLine(i, 0, i, 600);
             }
 
-            for (int i = 0; i < 600; i += m) {
+            for (int i = 0; i <= 600; i += m) {
                 g.drawLine(0, i, 600, i);
             }
             
-            cirkelred(g);
-            cirkelblack(g); 	
+           cirkelred(g);
+          cirkelblack(g);
+           
+            
         }
         
         public void cirkelred(Graphics c){
+
         	c.setColor(Color.RED);
-            c.fillOval(p1, p11, str, str);
+            c.fillOval(p1.x, p1.y, str, str);
+     
+            c.setColor(Color.BLACK);
+            c.fillOval(p2.x, p2.y, str, str);
+            
+            
+            addMouseListener(this);
             addMouseMotionListener(this);
         }
         public void cirkelblack(Graphics c){
         	 c.setColor(Color.BLACK);
-             c.fillOval(p2, p2, str, str);	
+             c.fillOval(p2.x, p2.y, str, str);	
+             addMouseListener(this);
              addMouseMotionListener(this);
         }
        
-
+        
+        
         public void fillCell() {
             repaint();
             
         }
-        
-        @Override
+
+		@Override
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
 			
@@ -114,9 +121,16 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
 
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			p2 = e.getX();
-		    p2 = e.getY();		
+			if(i==1){
+		    p1=e.getPoint();
+			}
+			else if(i==2){
+			p2=e.getPoint();
+			}
+			i=0;
+			
 		    repaint();
+		    
 		}
 
 		@Override
@@ -124,8 +138,4 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
 			// TODO Auto-generated method stub
 			
 		}
-			
-		}
-
-
-   
+}
