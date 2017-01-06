@@ -4,30 +4,34 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JComponent;
 
 
 public class CoreControl extends JComponent implements MouseListener, MouseMotionListener {
 	
-	public int r=600;
-	private int m;
+	private int r=600;
+	private int squaredim;
 	private int l;
+	private int n;
 	private int str;
-	private Point p1;
-	//public int p1=m/2-(str/2);
-	private Point p2;
-	private int p11;
-	//public int p2=600-m/2-(str/2);
+	private Helpcreate b;
+	private Point old;
+	private int deltax, deltay;
+	private boolean move = false;
+	private List<Helpcreate> array;
 
         public CoreControl(int n) {
-        	this.m=r/n;   	
-        	this.l=2*m;
-        	this.str=(m/3)*2;
-        	this.p1=new Point(m/2-(str/2), m/2-(str/2));
-        	this.p2=new Point(600-m/2-(str/2),600-m/2-(str/2));
-        	this.p11=m/2-(str/2);
-        	
+        	this.n=n;
+        	this.squaredim=r/n;   	
+        	this.l=2*squaredim;
+        	this.str=(squaredim/3)*2;
+        	array=new ArrayList<>();
+        	add(1,1,1);
+            add(2,8,8);
+        	addMouseListener(this);
+        	addMouseMotionListener(this);
         }
         
         
@@ -36,55 +40,39 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
             super.paintComponent(g);
         		int cellX = 0;
                 int cellY = 0;
-                for(int i=cellY; i<=r-m; i+=l){
-             	   for(int j=cellX; j<=r-m;j+=l){
+                for(int i=cellY; i<=r-squaredim; i+=l){
+             	   for(int j=cellX; j<=r-squaredim;j+=l){
              		  g.setColor(Color.GRAY);
-                      g.fillRect(j, i, m, m);
+                      g.fillRect(j, i, squaredim, squaredim);
                       g.setColor(Color.WHITE);
-                      g.fillRect(j+m, i, m, m); 
+                      g.fillRect(j+squaredim, i, squaredim, squaredim); 
                       g.setColor(Color.WHITE);
-                      g.fillRect(j, i+m, m, m);
+                      g.fillRect(j, i+squaredim, squaredim, squaredim);
                       g.setColor(Color.GRAY);
-                      g.fillRect(j+m, i+m, m, m);
+                      g.fillRect(j+squaredim, i+squaredim, squaredim, squaredim);
                       
              	   }
                 }
  
- 
             g.setColor(Color.BLACK);
             g.drawRect(0, 0, 600, 600);
             
-            for (int i = 0; i < 600; i += m) {
+            for (int i = 0; i < 600; i += squaredim) {
                 g.drawLine(i, 0, i, 600);
             }
 
-            for (int i = 0; i < 600; i += m) {
+            for (int i = 0; i < 600; i += squaredim) {
                 g.drawLine(0, i, 600, i);
-            }
+            }	
             
-            cirkelred(g);
-            cirkelblack(g); 	
+           	for(Helpcreate b: array){
+           		b.color.drawPieces(g,b.p,str);
+           	}
+           	
         }
+       
         
-        public void cirkelred(Graphics c){
-
-        	c.setColor(Color.RED);
-            c.fillOval(p1.x, p1.y, str, str);
- 
-            c.setColor(Color.BLACK);
-            c.fillOval(p2.x, p2.y, str, str);
-            
-            
-            addMouseListener(this);
-            addMouseMotionListener(this);
-        }
-        public void cirkelblack(Graphics c){
-        	 c.setColor(Color.BLACK);
-             c.fillOval(p2.x, p2.y, str, str);	
-             addMouseListener(this);
-             addMouseMotionListener(this);
-        }
-
+        
         public void fillCell() {
             repaint();
             
@@ -98,15 +86,73 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
+			int x = e.getX();
+             int y = e.getY();
+
+             // Locate positioned checker under mouse press.
+
+            	for(Helpcreate b: array){
+                if (CheckersPieces.contains(x, y, b.p, str)) {
+                   this.b = b;
+                   old=b.p.getLocation();
+                   deltax = x - b.p.x;
+                   deltay = y - b.p.y;
+                   move = true;
+                   return;
+                }
+			
+		}
 			
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
+		
 			
-		}
+           if (move)
+               move = false;
+            else
+               return;
+
+            // Placerer brikken i midten
+        /*   if(e.getX()<0 || e.getX()>600 || e.getY()<0 || e.getY()>600){
+        	   this.b.p = old;
+           }else*/
+           int delta1=squaredim*2-(str/2);
+           int delta2=squaredim*3-delta1;
+           int delta3=squaredim*2-delta1;
+           int deltablackdown=squaredim-(str/2);
+           int deltablackup=squaredim*2-deltablackdown;
+         
+           
+           b.p.x=(e.getX()-deltax)/squaredim * squaredim + squaredim / 2;
+           b.p.y=(e.getY()-deltay)/squaredim * squaredim + squaredim / 2;
+           
+           int deltay=b.p.y-old.y;
+           int deltax=b.p.x-old.x;
+           int deltax2=old.x-b.p.x;
+           int deltay2=old.y-b.p.y;
+     
+       
+           
+           // Do not move checker onto an occupied square.
+
+            for(Helpcreate b: array)
+               if (b != this.b && b.p.x==this.b.p.x && b.p.y==this.b.p.y)
+               {
+                 this.b.p = old;
+               }else if(this.b.p.x<0 || this.b.p.x>600 ||this.b.p.y<0 || this.b.p.y>600){
+            	   this.b.p = old;
+               }else if(this.b.i==1 && ((deltay>delta1 || deltax>delta1 ||deltax2>delta2 || deltay2>delta3) || ((deltay<deltablackdown && deltax2>squaredim-delta1)  || (deltay<deltablackdown && deltax>deltablackdown)))){
+            	   this.b.p = old; 
+               }else if(this.b.i==2 && (deltax>delta1 || deltax2>delta2 || deltay>deltablackdown || deltay2>deltablackup )){
+            	   this.b.p = old; 
+               }
+            	   
+
+            repaint();
+         }
+
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
@@ -122,15 +168,16 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
 
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			if(i==1){
-			    p1=e.getPoint();
-				}
-				else if(i==2){
-				p2=e.getPoint();
-				}
-				i=0;
-				
-			    repaint();
+
+			{
+                 if (move)
+                 {
+                    // Update location of checker center
+                    b.p = e.getPoint();
+                    repaint();
+                 }
+              }
+			   
 		}
 
 		@Override
@@ -138,8 +185,25 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
 			// TODO Auto-generated method stub
 			
 		}
+		
+		public void add(int i, int row, int col){
+			Helpcreate pieces= new Helpcreate();
+				pieces.i=i;
+				pieces.color=new CheckersPieces(i);
+				pieces.p=new Point((col-1)*squaredim+squaredim/2,(row-1)*squaredim+squaredim/2);
+		        array.add(pieces);
+		     
+			}
+
+		private class Helpcreate{
+			public int i;
+			public CheckersPieces color;
+			public Point p;
 			
 		}
+		
+
+		
+}
 
 
-   
