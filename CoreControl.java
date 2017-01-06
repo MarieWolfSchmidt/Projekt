@@ -22,6 +22,9 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
 	private boolean move = false;
 	private List<Helpcreate> array;
 	private boolean jump = false;
+	private boolean playerOne = true;
+	private boolean playerTwo = false;
+	
 
         public CoreControl(int n) {
         	this.n=n;
@@ -94,15 +97,31 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
 
             	for(Helpcreate b: array){
                 if (CheckersPieces.contains(x, y, b.p, str)) {
+                	if(playerOne){
+                		if(b.i==1){
                    this.b = b;
                    old=b.p.getLocation();
                    deltax = x - b.p.x;
                    deltay = y - b.p.y;
                    move = true;
-                   return;
+                  playerOne=false;
+                  playerTwo=true;
+                	}
+                }else if(playerTwo){
+                	if(b.i==2){
+                		this.b = b;
+                        old=b.p.getLocation();
+                        deltax = x - b.p.x;
+                        deltay = y - b.p.y;
+                        move = true;
+                        playerOne=true;
+                        playerTwo=false;
+                	}
                 }
-			
+                	
+			 return;
 		}
+     	}
                            
 			
 	}
@@ -136,44 +155,105 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
 
             for(Helpcreate b: array){
            
-             if(jump==true){
-            	 
+             if(jump==true){ 
             	 if (b != this.b && b.p.x==this.b.p.x && b.p.y==this.b.p.y){
-              	   this.b.p = old;}
-              	
+              	   this.b.p = old;
+              		if(playerOne){
+            			playerOne=true;
+            			playerTwo=false;
+            		}else if(playerTwo){
+            			playerOne=false;
+            			playerTwo=true;	
+            		}
+              	   }
               	if(this.b.p.x<0 || this.b.p.x>600 ||this.b.p.y<0 || this.b.p.y>600){
               	   this.b.p = old;
+              		if(playerOne){
+            			playerOne=true;
+            			playerTwo=false;
+            		}else if(playerTwo){
+            			playerOne=false;
+            			playerTwo=true;	
+            		}
                  }else if(this.b.i==1 && ((deltay>delta1+squaredim || deltax>delta1+squaredim  ||deltax2>delta2+squaredim  || deltay2>delta3+squaredim ) || ((deltay<deltablackdown+squaredim  && deltax2>squaredim-deltablackdown+squaredim )  || (deltay<deltablackdown+squaredim  && deltax>deltablackdown+squaredim ))|| ((deltax<deltablackdown+squaredim ) && (deltax2<squaredim-deltablackdown+squaredim )))){
               	   this.b.p = old; 
+              		if(playerOne){
+            			playerOne=true;
+            			playerTwo=false;
+            		}else if(playerTwo){
+            			playerOne=false;
+            			playerTwo=true;	
+            		}
+          
                  }else if(this.b.i==2 && ((deltax>delta1+squaredim|| deltax2>delta2+squaredim || deltay>deltablackdown+squaredim  || deltay2>deltablackup+squaredim  )||((deltay2<deltablackdown+squaredim  && deltax2>squaredim-deltablackdown+squaredim)  || (deltay2<deltablackdown+squaredim  && deltax>deltablackdown+squaredim )) || ((deltax2<deltablackdown+squaredim ) && (deltax<squaredim-deltablackdown+squaredim )))){
-              	   this.b.p = old; 
+              	   this.b.p = old;
+              		if(playerOne){
+            			playerOne=true;
+            			playerTwo=false;
+            		}else if(playerTwo){
+            			playerOne=false;
+            			playerTwo=true;	
+            		}
+              	
                  }else if (this.b.i==1){
               		array.remove(b.i);
+              		
               	}else if(this.b.i==2){
               		array.remove(b);
               	}
+              	jump=false;
             	 repaint();
             	 
               	
              }else {
-
             	if (b != this.b && b.p.x==this.b.p.x && b.p.y==this.b.p.y){
-            	   this.b.p = old;}
-            	
+            	   this.b.p = old;
+            		if(playerOne){
+            			playerOne=true;
+            			playerTwo=false;
+            		}else if(playerTwo){
+            			playerOne=false;
+            			playerTwo=true;	
+            		}
+            	}
             	if(this.b.p.x<0 || this.b.p.x>600 ||this.b.p.y<0 || this.b.p.y>600){
             	   this.b.p = old;
+            		if(playerOne){
+            			playerOne=false;
+            			playerTwo=true;
+            		}else if(playerTwo){
+            			playerOne=true;
+            			playerTwo=false;	
+            		}
                }else if(this.b.i==1 && ((deltay>delta1 || deltax>delta1 ||deltax2>delta2 || deltay2>delta3) || ((deltay<deltablackdown && deltax2>squaredim-deltablackdown)  || (deltay<deltablackdown && deltax>deltablackdown))|| ((deltax<deltablackdown) && (deltax2<squaredim-deltablackdown)))){
-            	   this.b.p = old; 
+            	   this.b.p = old;
+            		if(playerOne){
+            			playerOne=false;
+            			playerTwo=true;
+            		}else if(playerTwo){
+            			playerOne=true;
+            			playerTwo=false;	
+            		}
                }else if(this.b.i==2 && ((deltax>delta1 || deltax2>delta2 || deltay>deltablackdown || deltay2>deltablackup )||((deltay2<deltablackdown && deltax2>squaredim-deltablackdown)  || (deltay2<deltablackdown && deltax>deltablackdown)) || ((deltax2<deltablackdown) && (deltax<squaredim-deltablackdown)))){
             	   this.b.p = old; 
+            		if(playerOne){
+            			playerOne=false;
+            			playerTwo=true;
+            		}else if(playerTwo){
+            			playerOne=true;
+            			playerTwo=false;	
+            		}
                }
             
-            // Do not move checker onto an occupied square. 
-
-            repaint();
             	
-         }}
-            searchBoard();
+            repaint();
+           
+         }
+             searchBoard();
+             return;  
+            }
+            
+            
 		}
 
 		@Override
@@ -197,10 +277,10 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
                     // Update location of checker center
                     b.p = e.getPoint();
                     repaint();
+                	 }
                  }
               }
-			   
-		}
+
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
@@ -220,13 +300,13 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
 			for(Helpcreate b: array){
 				
 			if(this.b.i==1 && ((this.b.p.x+squaredim)== b.p.x && (this.b.p.y+squaredim)==b.p.y)){
-				//System.out.println("Rød");
 				jump = true;
+				System.out.println("RÃ˜D HOP");
 				break;
 				
 			}else if (this.b.i==2 && ((this.b.p.x-squaredim)==b.p.x && (this.b.p.y-squaredim)==b.p.y)){
-				//System.out.println("Sort");
 				jump = true;
+				System.out.println("SORT HOP");
 				break;
 			}else{
 				jump= false;
@@ -238,6 +318,12 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
 			return;
 		}
 		
+		public void player(){
+		
+			
+			
+			
+		}
 		
 		private class Helpcreate{
 			public int i;
