@@ -123,6 +123,7 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
            int delta3=squaredim*2-delta1;
            int deltablackdown=squaredim-(str/2);
            int deltablackup=squaredim*2-deltablackdown;
+           int delta4=squaredim*3-(str/2);
          
            
            b.p.x=(e.getX()-deltax)/squaredim * squaredim + squaredim / 2;
@@ -138,11 +139,19 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
             for(Helpcreate b: array){
            
              if(jump==true){
-            	 if (b != this.b && b.p.x==this.b.p.x && b.p.y==this.b.p.y){
-              	   this.b.p = old;
-              	   }
             	 
-
+            	 if (b != this.b && b.p.x==this.b.p.x && b.p.y==this.b.p.y){
+              	   this.b.p = old;}
+              	
+              	if(this.b.p.x<0 || this.b.p.x>600 ||this.b.p.y<0 || this.b.p.y>600){
+              	   this.b.p = old;
+                 }else if(this.b.i==1 && ((deltay>delta1+squaredim || deltax>delta1+squaredim  ||deltax2>delta2+squaredim  || deltay2>delta3+squaredim ) || ((deltay<deltablackdown && deltax2>squaredim-deltablackdown)  || (deltay<deltablackdown && deltax>deltablackdown))|| ((deltax<deltablackdown) && (deltax2<squaredim-deltablackdown)))){
+              	   this.b.p = old; 
+                 }else if(this.b.i==2 && ((deltax>delta1|| deltax2>delta2|| deltay>deltablackdown || deltay2>deltablackup )||((deltay2<deltablackdown && deltax2>squaredim-deltablackdown)  || (deltay2<deltablackdown && deltax>deltablackdown)) || ((deltax2<deltablackdown) && (deltax<squaredim-deltablackdown)))){
+              	   this.b.p = old; 
+                 }
+              
+            	
             	 repaint();
             	 
               	System.out.println("Jeg kan hoppe!");
@@ -238,8 +247,5 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
 			
 		}
 		
-		
-		
-
-		
+			
 }
