@@ -12,6 +12,7 @@ import javax.swing.JComponent;
 public class CoreControl extends JComponent implements MouseListener, MouseMotionListener {
 	
 	private int r=600;
+	public int fr;
 	private int squaredim;
 	private int l;
 	private int n;
@@ -28,7 +29,8 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
 
         public CoreControl(int n) {
         	this.n=n;
-        	this.squaredim=r/n;   	
+        	this.squaredim=r/n;  
+        	this.fr=squaredim*n;
         	this.l=2*squaredim;
         	this.str=(squaredim/3)*2;
         	array=new ArrayList<>();
@@ -59,27 +61,24 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
                 }
  
             g.setColor(Color.BLACK);
-            g.drawRect(0, 0, 600, 600);
+            g.drawRect(0, 0, fr, fr);
             
-            for (int i = 0; i < 600; i += squaredim) {
-                g.drawLine(i, 0, i, 600);
+            for (int i = 0; i < fr; i += squaredim) {
+                g.drawLine(i, 0, i, fr);
             }
 
-            for (int i = 0; i < 600; i += squaredim) {
-                g.drawLine(0, i, 600, i);
+            for (int i = 0; i < fr; i += squaredim) {
+                g.drawLine(0, i, fr, i);
             }	
             
            	for(Helpcreate b: array){
            		b.color.drawPieces(g,b.p,str);
            	}
            	
-        }
-       
-        
+        } 
         
         public void fillCell() {
-            repaint();
-            
+            repaint();   
         }
         
         @Override
@@ -158,43 +157,17 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
              if(jump==true){ 
             	 if (b != this.b && b.p.x==this.b.p.x && b.p.y==this.b.p.y){
               	   this.b.p = old;
-              		if(playerOne){
-            			playerOne=true;
-            			playerTwo=false;
-            		}else if(playerTwo){
-            			playerOne=false;
-            			playerTwo=true;	
-            		}
+              	 playerjump();
               	   }
               	if(this.b.p.x<0 || this.b.p.x>600 ||this.b.p.y<0 || this.b.p.y>600){
               	   this.b.p = old;
-              		if(playerOne){
-            			playerOne=false;
-            			playerTwo=true;
-            		}else if(playerTwo){
-            			playerOne=true;
-            			playerTwo=false;	
-            		}
+              	 playerjump();
                  }else if(this.b.i==1 && ((deltay>delta1+squaredim || deltax>delta1+squaredim  ||deltax2>delta2+squaredim  || deltay2>delta3+squaredim ) || ((deltay<deltablackdown+squaredim  && deltax2>squaredim-deltablackdown+squaredim )  || (deltay<deltablackdown+squaredim  && deltax>deltablackdown+squaredim ))|| ((deltax<deltablackdown+squaredim ) && (deltax2<squaredim-deltablackdown+squaredim )))){
               	   this.b.p = old; 
-              		if(playerOne){
-            			playerOne=false;
-            			playerTwo=true;
-            		}else if(playerTwo){
-            			playerOne=true;
-            			playerTwo=false;	
-            		}
-          
+              	 playerjump();
                  }else if(this.b.i==2 && ((deltax>delta1+squaredim|| deltax2>delta2+squaredim || deltay>deltablackdown+squaredim  || deltay2>deltablackup+squaredim  )||((deltay2<deltablackdown+squaredim  && deltax2>squaredim-deltablackdown+squaredim)  || (deltay2<deltablackdown+squaredim  && deltax>deltablackdown+squaredim )) || ((deltax2<deltablackdown+squaredim ) && (deltax<squaredim-deltablackdown+squaredim )))){
               	   this.b.p = old;
-              		if(playerOne){
-            			playerOne=false;
-            			playerTwo=true;
-            		}else if(playerTwo){
-            			playerOne=true;
-            			playerTwo=false;	
-            		}
-              	
+              	 playerjump();
                  }else if (this.b.i==1){
               		array.remove(b.i);
               		
@@ -212,41 +185,17 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
              }else {
             	if (b != this.b && b.p.x==this.b.p.x && b.p.y==this.b.p.y){
             	   this.b.p = old;
-            		if(playerOne){
-            			playerOne=true;
-            			playerTwo=false;
-            		}else if(playerTwo){
-            			playerOne=false;
-            			playerTwo=true;	
-            		}
+            	   player();
             	}
             	if(this.b.p.x<0 || this.b.p.x>600 ||this.b.p.y<0 || this.b.p.y>600){
             	   this.b.p = old;
-            		if(playerOne){
-            			playerOne=false;
-            			playerTwo=true;
-            		}else if(playerTwo){
-            			playerOne=true;
-            			playerTwo=false;	
-            		}
+            	   player();
                }else if(this.b.i==1 && ((deltay>delta1 || deltax>delta1 ||deltax2>delta2 || deltay2>delta3) || ((deltay<deltablackdown && deltax2>squaredim-deltablackdown)  || (deltay<deltablackdown && deltax>deltablackdown))|| ((deltax<deltablackdown) && (deltax2<squaredim-deltablackdown)))){
             	   this.b.p = old;
-            		if(playerOne){
-            			playerOne=false;
-            			playerTwo=true;
-            		}else if(playerTwo){
-            			playerOne=true;
-            			playerTwo=false;	
-            		}
+            	   player();
                }else if(this.b.i==2 && ((deltax>delta1 || deltax2>delta2 || deltay>deltablackdown || deltay2>deltablackup )||((deltay2<deltablackdown && deltax2>squaredim-deltablackdown)  || (deltay2<deltablackdown && deltax>deltablackdown)) || ((deltax2<deltablackdown) && (deltax<squaredim-deltablackdown)))){
             	   this.b.p = old; 
-            		if(playerOne){
-            			playerOne=false;
-            			playerTwo=true;
-            		}else if(playerTwo){
-            			playerOne=true;
-            			playerTwo=false;	
-            		}
+            		player();	
                }
             
             	
@@ -300,7 +249,8 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
 		        array.add(pieces);
 		     
 			}
-		public void searchBoard(){
+		
+		private void searchBoard(){
 			for(Helpcreate b: array){
 				
 			if(this.b.i==1 && ((this.b.p.x+squaredim)== b.p.x && (this.b.p.y+squaredim)==b.p.y)){
@@ -320,11 +270,24 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
 			return;
 		}
 		
-		public void player(){
+		private void player(){
+			if(playerOne){
+    			playerOne=false;
+    			playerTwo=true;
+    		}else if(playerTwo){
+    			playerOne=true;
+    			playerTwo=false;	
+    		}
+		}
 		
-			
-			
-			
+		private void playerjump(){
+	 		if(playerOne){
+    			playerOne=false;
+    			playerTwo=true;
+    		}else if(playerTwo){
+    			playerOne=true;
+    			playerTwo=false;	
+    		}
 		}
 		
 		private class Helpcreate{

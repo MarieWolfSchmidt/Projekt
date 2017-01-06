@@ -2,6 +2,8 @@
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,7 +19,7 @@ public class CheckersView extends JFrame {
 	public CheckersView(int size){
 		this.n=size;
 		checker = new CheckersModel(this);
-		this.setBounds(60, 60, 1000, 700);
+		this.setBounds(200, 80, 1000, 700);
 		this.getContentPane().setBackground(Color.LIGHT_GRAY);
 		this.getContentPane().setLayout(null);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);		
@@ -86,7 +88,6 @@ public class CheckersView extends JFrame {
 		
 		// The first new panel - the game panel.
 		JPanel panelOne = new JPanel();
-		panelOne.setBackground(Color.WHITE);
 		panelOne.setBounds(6, 72, 600, 600);
 		panelOne.setLayout(null);
 		this.getContentPane().add(panelOne);
@@ -97,10 +98,10 @@ public class CheckersView extends JFrame {
 		
 		CoreControl grid =new CoreControl(n);
 		grid.fillCell();
-		grid.setSize(600,600);
+		grid.setSize(grid.fr,grid.fr);
+		panelOne.setBackground(Color.LIGHT_GRAY);
 		panelOne.add(grid);
-		panelOne.setBackground(Color.WHITE);		
-		
+	
 		
 		//The second new panel - the score panel.
 		JPanel panelTwo = new JPanel();
@@ -128,10 +129,6 @@ public class CheckersView extends JFrame {
 		this.getContentPane().add(panelOne);
 		this.getContentPane().add(panelTwo);			
 	}
-	  public void fillCell() {
-          //fillCells=new Point();
-          repaint();
-          
-      }
+      
 	
 }
