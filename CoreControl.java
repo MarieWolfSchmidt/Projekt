@@ -21,6 +21,7 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
 	private int deltax, deltay;
 	private boolean move = false;
 	private List<Helpcreate> array;
+	private boolean jump = false;
 
         public CoreControl(int n) {
         	this.n=n;
@@ -102,12 +103,13 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
                 }
 			
 		}
+                           
 			
-		}
+	}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-		
+		//husk jump till false
 			
            if (move)
                move = false;
@@ -115,9 +117,7 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
                return;
 
             // Placerer brikken i midten
-        /*   if(e.getX()<0 || e.getX()>600 || e.getY()<0 || e.getY()>600){
-        	   this.b.p = old;
-           }else*/
+    
            int delta1=squaredim*2-(str/2);
            int delta2=squaredim*3-delta1;
            int delta3=squaredim*2-delta1;
@@ -134,25 +134,39 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
            int deltay2=old.y-b.p.y;
      
        
-           
-           // Do not move checker onto an occupied square.
 
-            for(Helpcreate b: array)
-               if (b != this.b && b.p.x==this.b.p.x && b.p.y==this.b.p.y)
-               {
-                 this.b.p = old;
-               }else if(this.b.p.x<0 || this.b.p.x>600 ||this.b.p.y<0 || this.b.p.y>600){
+            for(Helpcreate b: array){
+           
+             if(jump==true){
+            	 if (b != this.b && b.p.x==this.b.p.x && b.p.y==this.b.p.y){
+              	   this.b.p = old;
+              	   }
+            	 
+
+            	 repaint();
+            	 
+              	System.out.println("Jeg kan hoppe!");
+            	 
+             }else {
+
+            	if (b != this.b && b.p.x==this.b.p.x && b.p.y==this.b.p.y){
+            	   this.b.p = old;}
+            	
+            	if(this.b.p.x<0 || this.b.p.x>600 ||this.b.p.y<0 || this.b.p.y>600){
             	   this.b.p = old;
                }else if(this.b.i==1 && ((deltay>delta1 || deltax>delta1 ||deltax2>delta2 || deltay2>delta3) || ((deltay<deltablackdown && deltax2>squaredim-deltablackdown)  || (deltay<deltablackdown && deltax>deltablackdown))|| ((deltax<deltablackdown) && (deltax2<squaredim-deltablackdown)))){
             	   this.b.p = old; 
                }else if(this.b.i==2 && ((deltax>delta1 || deltax2>delta2 || deltay>deltablackdown || deltay2>deltablackup )||((deltay2<deltablackdown && deltax2>squaredim-deltablackdown)  || (deltay2<deltablackdown && deltax>deltablackdown)) || ((deltax2<deltablackdown) && (deltax<squaredim-deltablackdown)))){
             	   this.b.p = old; 
                }
-            	   
+            
+            // Do not move checker onto an occupied square. 
 
             repaint();
-         }
-
+            	
+         }}
+            searchBoard();
+		}
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
@@ -194,7 +208,29 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
 		        array.add(pieces);
 		     
 			}
-
+		public void searchBoard(){
+			for(Helpcreate b: array){
+				
+			if(this.b.i==1 && ((this.b.p.x+squaredim)== b.p.x && (this.b.p.y+squaredim)==b.p.y)){
+				System.out.println("Rød");
+				jump = true;
+				break;
+				
+			}else if (this.b.i==2 && ((this.b.p.x-squaredim)==b.p.x && (this.b.p.y-squaredim)==b.p.y)){
+				System.out.println("Sort");
+				jump = true;
+				break;
+			}else{
+				jump= false;
+			
+			}	
+			
+			}
+			
+			return;
+		}
+		
+		
 		private class Helpcreate{
 			public int i;
 			public CheckersPieces color;
@@ -202,8 +238,8 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
 			
 		}
 		
+		
+		
 
 		
 }
-
-
