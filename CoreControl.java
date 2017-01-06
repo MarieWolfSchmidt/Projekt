@@ -30,7 +30,7 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
         	this.str=(squaredim/3)*2;
         	array=new ArrayList<>();
         	add(1,1,1);
-            add(2,8,8);
+            add(2,n,n);
         	addMouseListener(this);
         	addMouseMotionListener(this);
         }
@@ -122,9 +122,7 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
            int delta2=squaredim*3-delta1;
            int delta3=squaredim*2-delta1;
            int deltablackdown=squaredim-(str/2);
-           int deltablackup=squaredim*2-deltablackdown;
-           int delta4=squaredim*3-(str/2);
-         
+           int deltablackup=squaredim*2-deltablackdown;         
            
            b.p.x=(e.getX()-deltax)/squaredim * squaredim + squaredim / 2;
            b.p.y=(e.getY()-deltay)/squaredim * squaredim + squaredim / 2;
@@ -145,17 +143,18 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
               	
               	if(this.b.p.x<0 || this.b.p.x>600 ||this.b.p.y<0 || this.b.p.y>600){
               	   this.b.p = old;
-                 }else if(this.b.i==1 && ((deltay>delta1+squaredim || deltax>delta1+squaredim  ||deltax2>delta2+squaredim  || deltay2>delta3+squaredim ) || ((deltay<deltablackdown && deltax2>squaredim-deltablackdown)  || (deltay<deltablackdown && deltax>deltablackdown))|| ((deltax<deltablackdown) && (deltax2<squaredim-deltablackdown)))){
+                 }else if(this.b.i==1 && ((deltay>delta1+squaredim || deltax>delta1+squaredim  ||deltax2>delta2+squaredim  || deltay2>delta3+squaredim ) || ((deltay<deltablackdown+squaredim  && deltax2>squaredim-deltablackdown+squaredim )  || (deltay<deltablackdown+squaredim  && deltax>deltablackdown+squaredim ))|| ((deltax<deltablackdown+squaredim ) && (deltax2<squaredim-deltablackdown+squaredim )))){
               	   this.b.p = old; 
-                 }else if(this.b.i==2 && ((deltax>delta1+squaredim|| deltax2>delta2+squaredim|| deltay>deltablackdown+squaredim || deltay2>deltablackup+squaredim )||((deltay2<deltablackdown && deltax2>squaredim-deltablackdown)  || (deltay2<deltablackdown && deltax>deltablackdown)) || ((deltax2<deltablackdown) && (deltax<squaredim-deltablackdown)))){
+                 }else if(this.b.i==2 && ((deltax>delta1+squaredim|| deltax2>delta2+squaredim || deltay>deltablackdown+squaredim  || deltay2>deltablackup+squaredim  )||((deltay2<deltablackdown+squaredim  && deltax2>squaredim-deltablackdown+squaredim)  || (deltay2<deltablackdown+squaredim  && deltax>deltablackdown+squaredim )) || ((deltax2<deltablackdown+squaredim ) && (deltax<squaredim-deltablackdown+squaredim )))){
               	   this.b.p = old; 
-                 }
-              
-            	
+                 }else if (this.b.i==1){
+              		array.remove(b.i);
+              	}else if(this.b.i==2){
+              		array.remove(b);
+              	}
             	 repaint();
             	 
-              	System.out.println("Jeg kan hoppe!");
-            	 
+              	
              }else {
 
             	if (b != this.b && b.p.x==this.b.p.x && b.p.y==this.b.p.y){
@@ -221,12 +220,12 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
 			for(Helpcreate b: array){
 				
 			if(this.b.i==1 && ((this.b.p.x+squaredim)== b.p.x && (this.b.p.y+squaredim)==b.p.y)){
-				System.out.println("Rød");
+				//System.out.println("Rød");
 				jump = true;
 				break;
 				
 			}else if (this.b.i==2 && ((this.b.p.x-squaredim)==b.p.x && (this.b.p.y-squaredim)==b.p.y)){
-				System.out.println("Sort");
+				//System.out.println("Sort");
 				jump = true;
 				break;
 			}else{
