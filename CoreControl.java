@@ -147,7 +147,7 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
               	   this.b.p = old;
                  }else if(this.b.i==1 && ((deltay>delta1+squaredim || deltax>delta1+squaredim  ||deltax2>delta2+squaredim  || deltay2>delta3+squaredim ) || ((deltay<deltablackdown && deltax2>squaredim-deltablackdown)  || (deltay<deltablackdown && deltax>deltablackdown))|| ((deltax<deltablackdown) && (deltax2<squaredim-deltablackdown)))){
               	   this.b.p = old; 
-                 }else if(this.b.i==2 && ((deltax>delta1|| deltax2>delta2|| deltay>deltablackdown || deltay2>deltablackup )||((deltay2<deltablackdown && deltax2>squaredim-deltablackdown)  || (deltay2<deltablackdown && deltax>deltablackdown)) || ((deltax2<deltablackdown) && (deltax<squaredim-deltablackdown)))){
+                 }else if(this.b.i==2 && ((deltax>delta1+squaredim|| deltax2>delta2+squaredim|| deltay>deltablackdown+squaredim || deltay2>deltablackup+squaredim )||((deltay2<deltablackdown && deltax2>squaredim-deltablackdown)  || (deltay2<deltablackdown && deltax>deltablackdown)) || ((deltax2<deltablackdown) && (deltax<squaredim-deltablackdown)))){
               	   this.b.p = old; 
                  }
               
