@@ -1,0 +1,10 @@
+Things to consider changing in the basis version: 
+
+Well things can work as they are - if something should be changed it should be that CheckersModel is rewritten
+to have less functions inside of it.
+
+1. Consider changing the CheckersModel so that it has less functions.
+	- It would be great to move the majority of the functions to another class and just call those functions from that class.
+	
+2. Redoing the functions in CheckersModel so that they have a return value. 
+	- This would make them less dependent on their placement in the code and therefore easier to change CheckersModel.
