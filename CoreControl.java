@@ -23,11 +23,10 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
 	private List<CheckersPieces> pieceList;
 	private boolean move = false;
 	private boolean jump = false;
-	private boolean playerOne = true;
-	private boolean playerTwo = false;
+	private boolean playerOne = false;
+	private boolean playerTwo = true;
 	
 	
-
         public CoreControl(int cmdLineArgument) {
         	this.cmdLineArgument = cmdLineArgument;
         	this.squareDim = boardSize/cmdLineArgument;  
@@ -130,7 +129,7 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
 			 int delta1 = squareDim*2 - (pieceSize/2);
 			 int delta2 = squareDim*3 - delta1;
 			 int delta3 = squareDim*2 - delta1;
-			 int deltaBlackDown = squareDim - (pieceSize/2);  
+			 int delta4 = squareDim - (pieceSize/2);  
 			
 			// Centers the piece in the given square in the location where the mouse is released.
 			piece.point.x = (((e.getX() - deltaX) / squareDim) * squareDim) + (squareDim / 2);
@@ -147,28 +146,24 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
 			// to check if the move is legal. 
 			for (CheckersPieces piece: pieceList) {
 				if (jump == true) { 
-					// This condition makes sure that no pieces can be on top of each other when releasing the mouse button.
-					if (piece != this.piece && piece.point.x == this.piece.point.x && piece.point.y == this.piece.point.y) {
-						this.piece.point = oldCoord;
-						player();
-					}
 					// First condition makes sure the piece is inside the board. 
 					if (this.piece.point.x < 0 || this.piece.point.x > finalBoardSize || this.piece.point.y < 0 || this.piece.point.y > finalBoardSize) {
 						this.piece.point = oldCoord;
 						player();
-					// Second condition makes sure the piece can only move one down to the left and one down to the right.	
+					//The second condition makes first sure that the red piece can't move up, more than two row down and, two column to the right and that it can't move to the left.
+					//than it makes sure that the pieces can't move one row down, and finally it make sure that it can't move in the same column and the first column to the right.
 					} else if (this.piece.color == 1 && 
-							((deltay > (delta1 + squareDim) ||deltax > (delta1 + squareDim) || deltax2 > (delta2 + squareDim) || deltay2 > (delta3 + squareDim)) 
-							|| ((deltay < (deltaBlackDown + squareDim) && deltax2 > (squareDim - deltaBlackDown + squareDim))
-							|| (deltay < (deltaBlackDown + squareDim) && deltax > (deltaBlackDown + squareDim)))
-							|| ((deltax < (deltaBlackDown + squareDim)) && (deltax2 < (squareDim - deltaBlackDown + squareDim))))) {
+							((deltay2 > (delta3 + squareDim) || deltay > (delta1 + squareDim) || deltax > (delta1 + squareDim) || deltax2>delta3)
+							||(deltay<delta1)
+							||(deltax<delta1))){
 						this.piece.point = oldCoord; 
 						player();
+						//The third condition makes first sure that the black piece can't move down, more than two row up and two column to the left and that it can't move to the right.
+						//than it makes sure that the pieces can't move one row up, and finally it make sure that it can't move in the same column and the first column to the left.	
 					} else if(this.piece.color == 2 && 
-							((deltax > (delta1 + squareDim) || deltax2 > (delta2 + squareDim) || deltay > (deltaBlackDown + squareDim) || deltay2 > (delta2 + squareDim)) 
-							|| ((deltay2 < (deltaBlackDown + squareDim) && deltax2 > (squareDim - deltaBlackDown + squareDim)) 
-							|| (deltay2 < (deltaBlackDown + squareDim) && deltax > (deltaBlackDown + squareDim))) 
-							|| ((deltax2 < (deltaBlackDown + squareDim)) && (deltax < (squareDim - deltaBlackDown + squareDim))))) {
+							((deltay2 > (delta2 + squareDim) || deltay > (delta4 + squareDim) || deltax > (delta2 + squareDim) || deltax2 > (delta1 + squareDim))
+							||(deltay2<delta1)
+							|| (deltax2<delta1))){
 						this.piece.point = oldCoord;
 						player();
 					} else if (this.piece.color == 1) {  // WHY DOES THIS WORK ??? 
@@ -178,21 +173,26 @@ public class CoreControl extends JComponent implements MouseListener, MouseMotio
 					}
 					jump = false;
 					repaint();
-					return;
         		
 				} else {
-					if (piece != this.piece && piece.point.x == this.piece.point.x && piece.point.y == this.piece.point.y) {
-						this.piece.point = oldCoord;
-        	    		player();
-        	    	}
-        	 
-        	    	if(this.piece.point.x < 0 || this.piece.point.x > 600 ||this.piece.point.y < 0 || this.piece.point.y > 600) {
+					//The first condition makes sure that the piece stays inside the board.
+					if(this.piece.point.x < 0 || this.piece.point.x > finalBoardSize ||this.piece.point.y < 0 || this.piece.point.y > finalBoardSize) {
         	    		this.piece.point = oldCoord;
         	    		player();
-        	    	} else if (this.piece.color == 1 && ((deltay > delta1 || deltax > delta1 ||deltax2 > delta2 || deltay2 > delta3) || ((deltay < deltaBlackDown && deltax2 > (squareDim - deltaBlackDown))  || (deltay < deltaBlackDown && deltax > deltaBlackDown))|| ((deltax < deltaBlackDown) && (deltax2 < (squareDim - deltaBlackDown))))){
+        	    	//The second condition makes first sure that the red piece can't move up, more than one row down and a column for each side.
+        	    	// then it makes sure that the piece can't move straight to the side, and finally it makes sure that the pieces don't go straight down. 
+        	    	} else if (this.piece.color == 1 && 
+        	    			 ((deltay2 > delta3 || deltay>delta1 || deltax>delta1 || deltax2>delta2)
+        	    			 || (this.piece.point.y==oldCoord.y && (deltax2 > delta3 || deltax>delta4))
+        	    			 || (this.piece.point.x==oldCoord.x))){
         	    		this.piece.point = oldCoord;
         	    		player();
-        	    	} else if (this.piece.color == 2 && ((deltax > delta1 || deltax2 > delta2 || deltay > deltaBlackDown || deltay2 > delta2 )||((deltay2 < deltaBlackDown && deltax2 > (squareDim - deltaBlackDown))  || (deltay2 < deltaBlackDown && deltax > deltaBlackDown)) || ((deltax2 < deltaBlackDown) && (deltax < (squareDim - deltaBlackDown))))){
+        	    	//The third condition makes first sure that the black piece can't move down and more than one row up,
+            	    // then it makes sure that the piece can't move straight to the side, and finally it makes sure that the pieces don't go straight down. 
+        	    	} else if (this.piece.color == 2 && 
+        	    			((deltay2 > delta2 || deltay > delta4 || deltax>delta2 || deltax2 > delta1)
+        	    			||(this.piece.point.y==oldCoord.y && (deltax2>delta3 || deltax>delta4))
+        	    			|| (this.piece.point.x==oldCoord.x))){
         	    		this.piece.point = oldCoord; 
         	    		player();	
         	    	}
