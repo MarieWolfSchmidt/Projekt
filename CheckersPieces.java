@@ -6,21 +6,22 @@ import java.awt.Point;
 
 public class CheckersPieces  {
 
-	private int i;
+	protected int color;
+	public Point point;
 	
-	public CheckersPieces(int i){
-		this.i=i;
-		
+	public CheckersPieces(int color, Point p){
+		this.color=color;
+		this.point=p;
 	}
 	
 	public void drawPieces(Graphics g, Point p, int str){
 		int x=(p.x-str/2);
 		int y=(p.y-str/2);
-		if(i==1){
+		if(color==1){
 		g.setColor(Color.RED);
         g.fillOval(x, y, str, str); 
 		}
-		else if(i==2){
+		else if(color==2){
         g.setColor(Color.BLACK);
         g.fillOval(x, y, str, str);
 		}
