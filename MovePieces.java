@@ -18,6 +18,7 @@ public class MovePieces {
 	private boolean playerTwo = false;
 	private boolean moveAnyPiece =true;
 	private Pieces piece;
+	private Pieces jumpingPiece;
 	private Pieces removeRedLBlackR;
 	private Pieces removeRedRBlackL;
 	private List<Pieces> pieceList;
@@ -127,6 +128,7 @@ public class MovePieces {
 		this.piece.point.x = (((e.getX() - deltaX) / this.squareDim) * this.squareDim) + (this.squareDim / 2);
 		this.piece.point.y = (((e.getY() - deltaY) / this.squareDim) * this.squareDim) + (this.squareDim / 2);
        
+		jumpingPiece = this.piece;
 		// Difference between the 'old' location i.e. square and the 'new' one. 
 		int deltaNewXOldX = this.piece.point.x - oldCoord.x;
 		int deltaNewYOldY = this.piece.point.y - oldCoord.y;
@@ -137,7 +139,7 @@ public class MovePieces {
 		// This code block holds the conditions for moving the pieces. 
 		
 		
-		//old code starts here
+		
 		if (jumpRedRBlackL == true) { 
 				// First condition makes sure the piece is inside the board. 
 				if (this.piece.point.x < 0 || this.piece.point.x > this.finalBoardSize || this.piece.point.y < 0 || this.piece.point.y > this.finalBoardSize) {
@@ -164,12 +166,29 @@ public class MovePieces {
 					player();
 				} else if (this.piece.color == 1) {   
 					pieceList.remove(removeRedLBlackR);
-					playerTwo = true;
-					searchBoard();
+					jumpAgain();
+//					jumpingPiece = this.piece;
+//					playerOne = true;
+//					searchBoard();
+//					if (jumpListRedRBlackL.contains(jumpingPiece)){
+//						jumpListRedRBlackL.clear();
+//						jumpListRedRBlackL.add(jumpingPiece);
+//						moveAnyPiece = false;
+//						playerOne = true;
+//					} else if (jumpListRedLBlackR.contains(jumpingPiece)){
+//						jumpListRedLBlackR.clear();
+//						jumpListRedLBlackR.add(jumpingPiece);
+//						moveAnyPiece = false;
+//						playerOne = true;
+//					} else{
+//						playerTwo = true;
+//					}
+//					playerTwo = true;
 				} else if (this.piece.color == 2) {	
 					pieceList.remove(removeRedLBlackR);
-					playerOne = true;
-					searchBoard();
+					jumpAgain();
+//					playerOne = true;
+//					searchBoard();
 
 				}
 				
@@ -199,12 +218,14 @@ public class MovePieces {
 					player();				
 				} else if (this.piece.color == 1) {   
 					pieceList.remove(removeRedRBlackL);
-					playerTwo = true;
-					searchBoard();
+					jumpAgain();
+//					playerTwo = true;
+//					searchBoard();
 				} else if (this.piece.color == 2) {	
 					pieceList.remove(removeRedRBlackL);
-					playerOne = true;
-					searchBoard();
+					jumpAgain();
+//					playerOne = true;
+//					searchBoard();
 				}
 			}
 			
@@ -374,6 +395,42 @@ public class MovePieces {
 		} else if (playerTwo == true) {
 			playerOne=true;
 			playerTwo=false;	
+		}
+	}
+	
+	
+	public void jumpAgain(){
+		jumpListRedLBlackR.clear();
+		jumpListRedRBlackL.clear();
+		if (playerTwo) {
+			playerOne = true;
+			playerTwo = false;
+			searchBoard();
+			if (jumpListRedLBlackR.contains(jumpingPiece)){
+				jumpListRedLBlackR.clear();
+			} else if( jumpListRedRBlackL.contains(jumpingPiece)) {
+				jumpListRedRBlackL.clear();
+				jumpListRedRBlackL.add(jumpingPiece);
+			} else {
+				playerOne = false;
+				playerTwo = true;
+				}
+			}
+		if (playerOne) {
+			playerOne = false;
+			playerTwo = true;
+			searchBoard();
+			if (jumpListRedLBlackR.contains(jumpingPiece)){
+				jumpListRedLBlackR.clear();
+				jumpListRedLBlackR.add(jumpingPiece);
+			} else if( jumpListRedRBlackL.contains(jumpingPiece)) {
+				jumpListRedRBlackL.clear();
+				jumpListRedRBlackL.add(jumpingPiece);
+			} else {
+				playerOne = true;
+				playerTwo = false;
+				searchBoard();
+				}
 		}
 	}
 	
