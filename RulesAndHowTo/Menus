@@ -1,0 +1,89 @@
+public void rules(){
+			
+			view.getContentPane().removeAll();
+			view.getContentPane().repaint();
+			
+			JPanel rulePanel = new JPanel();
+			rulePanel.setBounds(6, 6, 1250, 800);
+			rulePanel.setLayout(null);
+			view.getContentPane().add(rulePanel);
+			
+			JLabel lblRules = new JLabel("RULES");
+			JButton howToButton = new JButton("How To Play");
+			JButton backButton = new JButton("Back To Menu");
+			JTextArea txtRules = new JTextArea();
+			
+			lblRules.setBounds(460, 5, 50, 100);
+			howToButton.setBounds(800, 450, 104, 29);
+			backButton.setBounds(800, 500, 104, 29);
+			txtRules.setBounds(247, 80, 625, 400);
+			
+			lblRules.setFont(new Font("Calibri", Font.PLAIN, 20));
+			howToButton.setFont(new Font("Tahoma", Font.PLAIN, 11));
+			backButton.setFont(new Font("Tahoma", Font.PLAIN, 11));
+			txtRules.setFont(new Font("Calibri", Font.PLAIN, 20));
+			
+			rulePanel.add(lblRules);
+			rulePanel.add(howToButton);
+			rulePanel.add(backButton);
+			rulePanel.add(txtRules);
+			
+			
+			txtRules.setText(" \r\n \r\n - Red player starts the game."
+					+ "\r\n - Each player take turns moving their piece.\r\n - When a piece reaches the opponent's piece it can \r\n    jump over it,"
+					+ " which removes the opponent's piece. \r\n - The game is over when there's only one piece left."
+					+ "\r\n - The player with the last piece wins the game. \r\n - When a piece reaches the opposite site of the board, "
+					+ "\r\n   it becomes \"Dam\", and is now able to move backwards.\r\n - The piece first becomes \"Dam\" in the next turn. \r\n");
+			txtRules.setBackground(Color.LIGHT_GRAY);
+			
+			
+			CheckersController checkList = new CheckersController(view.checker);
+			backButton.addActionListener(checkList);
+			howToButton.addActionListener(checkList);
+			
+			view.getContentPane().add(rulePanel);
+		}
+		
+		public void howTo(){
+			
+			view.getContentPane().removeAll();
+			view.getContentPane().repaint();
+			
+			JPanel howToPanel = new JPanel();
+			howToPanel.setBounds(6, 6, 1250, 800);
+			howToPanel.setLayout(null);
+			view.getContentPane().add(howToPanel);
+			
+			JLabel lblHowTo = new JLabel("HOW To PLAY");
+			JTextArea txtHowTo = new JTextArea();
+			JButton ruleButton = new JButton("Rules");
+			JButton backButton = new JButton("Back To Menu");
+			
+			lblHowTo.setBounds(440, 5, 200, 100);
+			txtHowTo.setBounds(247, 80, 625, 400);
+			ruleButton.setBounds(800, 450, 104, 29);
+			backButton.setBounds(800, 500, 104, 29);
+			
+			lblHowTo.setFont(new Font("Calibri", Font.PLAIN, 20));
+			txtHowTo.setFont(new Font("Calibri", Font.PLAIN, 20));
+			ruleButton.setFont(new Font("Tahoma", Font.PLAIN, 11));
+			backButton.setFont(new Font("Tahoma", Font.PLAIN, 11));
+			
+			howToPanel.add(lblHowTo);
+			howToPanel.add(txtHowTo);
+			howToPanel.add(ruleButton);
+			howToPanel.add(backButton);
+			
+			txtHowTo.setText("\r\n \r\n - To move the pieces click the piece and drag it to \r\n   the desired desination. "
+					+ "\r\n - You can only move the piece to a legal Checkers move."
+					+ "\r\n - The piece will go back to the old position, \r\n   if it is moved to an illegal destination, "
+					+ "\r\n    and the player has to move their piece again. \r\n");
+			txtHowTo.setBackground(Color.LIGHT_GRAY);
+			
+			CheckersController checkList = new CheckersController(view.checker);
+			ruleButton.addActionListener(checkList);
+			backButton.addActionListener(checkList);
+			
+			view.getContentPane().add(howToPanel);
+
+		}
