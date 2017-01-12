@@ -18,8 +18,8 @@ public class MovePieces {
 	private boolean playerTwo = false;
 	private boolean moveAnyPiece =true;
 	private Pieces piece;
-	private Pieces removePiece;
-	private Pieces saveRemovePiece;
+	private Pieces removeRedLBlackR;
+	private Pieces removeRedRBlackL;
 	private List<Pieces> pieceList;
 	private List<Pieces> jumpListRedRBlackL;
 	private List<Pieces> jumpListRedLBlackR;
@@ -163,11 +163,11 @@ public class MovePieces {
 					jumpRedRBlackL = true;
 					player();
 				} else if (this.piece.color == 1) {   
-					pieceList.remove(removePiece);
+					pieceList.remove(removeRedLBlackR);
 					playerTwo = true;
 					searchBoard();
 				} else if (this.piece.color == 2) {	
-					pieceList.remove(removePiece);
+					pieceList.remove(removeRedLBlackR);
 					playerOne = true;
 					searchBoard();
 
@@ -198,11 +198,11 @@ public class MovePieces {
 					jumpRedLBlackR=true;
 					player();				
 				} else if (this.piece.color == 1) {   
-					pieceList.remove(removePiece);
+					pieceList.remove(removeRedRBlackL);
 					playerTwo = true;
 					searchBoard();
 				} else if (this.piece.color == 2) {	
-					pieceList.remove(removePiece);
+					pieceList.remove(removeRedRBlackL);
 					playerOne = true;
 					searchBoard();
 				}
@@ -259,32 +259,34 @@ public class MovePieces {
 						if(playerOne == true){
 							for(Pieces piece: this.pieceList){
 								//Makes sure at red piece can't jump right over a black piece if there is another piece behind it. 
-								if(pieceBlack.point.x == (piece.point.x - squareDim) && pieceBlack.point.y == (piece.point.y - squareDim)){
+								if(pieceBlack.point.x == (piece.point.x - squareDim) && pieceBlack.point.y == (piece.point.y - squareDim)
+										|| ((pieceBlack.point.x + squareDim) > finalBoardSize) || ((pieceBlack.point.y + squareDim) > finalBoardSize)){
+									// the OR parts of the sentence make sure that piece cant jump of board
 									moveAnyPiece = true;
 									jumpListRedRBlackL.clear();
 									break;
 								//If the isn't anything behind the black piece the red piece are going to slain that the next turn. 
 								} else{
 									jumpListRedRBlackL.add(pieceRed);
-									removePiece=pieceBlack;
-									saveRemovePiece = removePiece;
+									removeRedLBlackR=pieceBlack;
+									//saveRemovePiece = removePiece;
 									moveAnyPiece = false;
 								}
 							}
 						} else if (playerTwo == true){
 							for(Pieces piece: this.pieceList){
-								//Makes sure at black piece can't jump left over a black piece if there is another piece behind it. 
-								if(pieceRed.point.x == (piece.point.x + squareDim) && pieceRed.point.y == (piece.point.y + squareDim)){
+								//Makes sure at black piece can't jump left over a red piece if there is another piece behind it. 
+								if(pieceRed.point.x == (piece.point.x + squareDim) && pieceRed.point.y == (piece.point.y + squareDim)
+										|| ((pieceRed.point.x - squareDim) < 0) || ((pieceRed.point.y - squareDim) < 0)){
+									// the OR parts of the sentence make sure that piece cant jump of board 
 									moveAnyPiece = true;
 									jumpListRedRBlackL.clear();
-									System.out.println("BLACK L");
 									break;
 								//If the isn't anything behind the red piece the black piece are going to slain that the next turn. 
 							} else{
-							System.out.println("HALLO!");
 							jumpListRedRBlackL.add(pieceBlack);
-							removePiece=pieceRed;
-							saveRemovePiece = removePiece;
+							removeRedLBlackR=pieceRed;
+							//saveRemovePiece = removePiece;
 							moveAnyPiece = false;
 							}
 						}
@@ -295,16 +297,21 @@ public class MovePieces {
 		
 		for (Pieces pieceRed: this.pieceList) {
 			for(Pieces pieceBlack: this.pieceList){
-				//This one check's if the a red piece can jump over a black piece to the left, and if a black piece can jump right over a red piece.
+				//This one checks if the a red piece can jump over a black piece to the left, and if a black piece can jump right over a red piece.
 			 	if (pieceRed.color == 1 && pieceBlack.color==2 
-				&& ((pieceRed.point.x - squareDim) == pieceBlack.point.x && (pieceRed.point.y + squareDim) == pieceBlack.point.y)){
+				&& ((pieceRed.point.x - squareDim) == pieceBlack.point.x && (pieceRed.point.y + squareDim) == pieceBlack.point.y)
+				){
 			 			if(playerOne == true){
 			 				for(Pieces piece: this.pieceList){
-								//Makes sure at red piece can't jump right over a black piece if there is another piece behind it. 
-			 					if(pieceBlack.point.x == (piece.point.x + squareDim) && pieceBlack.point.y == (piece.point.y - squareDim)){
+								//Makes sure at red piece can't jump left over a black piece if there is another piece behind it. 
+			 					if(pieceBlack.point.x == (piece.point.x + squareDim) && (pieceBlack.point.y == (piece.point.y - squareDim)) 
+			 							|| ((pieceBlack.point.x - squareDim) < 0 ) || ((pieceBlack.point.y + squareDim) > finalBoardSize)){
+			 					// the OR parts of the sentence make sure that piece cant jump of board
+			 						
+			 						//But it need to check if it is possible to jump to the other side
 			 						if(jumpListRedRBlackL.size()>0){
 			 							moveAnyPiece =false;
-			 							removePiece =saveRemovePiece;
+			 							removeRedRBlackL =removeRedLBlackR;
 			 						} else {
 			 						moveAnyPiece = true;
 			 						}
@@ -312,30 +319,31 @@ public class MovePieces {
 									break;
 								//If the isn't anything behind the black piece the red piece are going to slain that the next turn. 
 								} else{
-									System.out.println("RedL");
 									jumpListRedLBlackR.add(pieceRed);
-									removePiece=pieceBlack;
+									removeRedRBlackL=pieceBlack;
 									moveAnyPiece = false;
 									}
 			 					}
 						} else if (playerTwo == true){
 							for(Pieces piece: this.pieceList){
-								//Makes sure at red piece can't jump left over a black piece if there is another piece behind it. 
-			 					if(pieceRed.point.x == (piece.point.x - squareDim) && pieceRed.point.y == (piece.point.y + squareDim)){
+								//Makes sure at black piece can't jump right over a red piece if there is another piece behind it. 
+			 					if(pieceRed.point.x == (piece.point.x - squareDim) && (pieceRed.point.y == (piece.point.y + squareDim)) 
+			 							|| ((pieceRed.point.x + squareDim) > finalBoardSize) || ((pieceRed.point.y - squareDim) < 0)){
+			 					// the OR parts of the sentence make sure that piece can't jump of board
+			 						
+			 						//But it needs to check if it is possible to jump to the other side
 			 						if(jumpListRedRBlackL.size()>0){
 			 						moveAnyPiece = false;
-			 						removePiece = saveRemovePiece;
+			 						removeRedRBlackL = removeRedLBlackR;
 			 						}else {
 			 						moveAnyPiece = true;
 			 						}
 									jumpListRedLBlackR.clear();
-									System.out.println("Black R FALSE");
 									break;
 								//If the isn't anything behind the black piece the red piece are going to slain that the next turn. 
 								} else{
 									jumpListRedLBlackR.add(pieceBlack);
-									System.out.println("Black R");
-									removePiece=pieceRed;
+									removeRedRBlackL=pieceRed;
 									moveAnyPiece = false;
 									}
 			 					}
