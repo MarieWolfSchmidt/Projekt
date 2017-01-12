@@ -1,0 +1,26 @@
+public void actionPerformed(ActionEvent e) {
+			 
+	String command = e.getActionCommand();
+		if (command.equals("New Game")) {
+			checkersModel.game();
+		} else if (command.equals("High Score")) {
+			// score();
+		}else if(command.equals("Settings")){
+			 checkersModel.settings();
+			 
+		 }else if(command.equals("Rules")){
+			checkersModel.rules(); 
+			
+		 }else if(command.equals("How To Play")){
+			 checkersModel.howTo();	
+		
+		} else if (command.equals("Exit")) {
+			System.exit(0);
+		} else if (command.equals("Back To Menu")) {
+			checkersModel.removePieces();
+			checkersModel.menu();
+		} else {
+			System.out.println("ERROR: Unexpected ActionCommand");
+		}
+			 	 
+	}
