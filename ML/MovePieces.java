@@ -22,7 +22,6 @@ public class MovePieces {
 	private Pieces piece;
 	private Pieces jumpingPiece;
 	private Pieces removePiece;
-//	private Pieces removeRedRBlackL;
 	private List<Pieces> removeList;
 	private List<Pieces> pieceList;
 	private List<Pieces> jumpListRedRBlackL;
@@ -147,7 +146,7 @@ public class MovePieces {
 		
 		
 		
-		if (jumpRedRBlackL == true && this.piece.isKing == false) { 
+		if (jumpRedRBlackL == true) { 
 				// First condition makes sure the piece is inside the board. 
 				if (this.piece.getPoint().x < 0 || this.piece.getPoint().x > this.finalBoardSize || this.piece.getPoint().y < 0 || this.piece.getPoint().y > this.finalBoardSize) {
 					this.piece.setPoint(oldCoord);
@@ -193,7 +192,7 @@ public class MovePieces {
 					
 				}
 				
-			}else if(jumpRedLBlackR == true && this.piece.isKing == false){
+			}else if(jumpRedLBlackR == true){
 				// First condition makes sure the piece is inside the board. 
 				if (this.piece.getPoint().x < 0 || this.piece.getPoint().x > this.finalBoardSize || this.piece.getPoint().y < 0 || this.piece.getPoint().y > this.finalBoardSize) {
 					this.piece.setPoint(oldCoord);
@@ -238,40 +237,39 @@ public class MovePieces {
 				}
 			} else if (this.piece.isKing == true){
 				
-					
-					if (this.piece.getPoint().x < 0 || this.piece.getPoint().x  > this.finalBoardSize || this.piece.getPoint().y < 0 || this.piece.getPoint().y > this.finalBoardSize) {
+				for (Pieces piece: pieceList) {
+					if(this.piece != piece && this.piece.getPoint().x==piece.getPoint().x && this.piece.getPoint().y==piece.getPoint().y){
 						this.piece.setPoint(oldCoord);
-						jumpRedRBlackL = false;	
-						player();
-					} else if (piece != this.piece && piece.getPoint().x ==this.piece.getPoint().x && piece.getPoint().y ==this.piece.getPoint().y){
-						this.piece.setPoint(oldCoord);
-		            	   player();
-		            	   
-					}else if (this.piece.getColor().equals(pOneColor) && 
-			    			((deltayOldYNewY > fromPointToEndOfOneSquareBack || deltaNewYOldY > fromPointToLengthOfTwoSquare 
-			    			|| deltaNewXOldX>fromPointToEndOfOneSquareBack || deltaOldXNewX > fromPointToLengthOfTwoSquare)
-		        	    	|| (this.piece.getPoint().y==oldCoord.y && (deltaOldXNewX>fromSquareStartToPoint || deltaNewXOldX>fromPointToLengthOfOneSquare))
-		        	    	|| (this.piece.getPoint().x==oldCoord.x))){
-			    		
-						this.piece.setPoint(oldCoord);
-			    		player();
-			    		
-			    		// Uses the conditions from the regular red piece to make the red piece move in the other direction.
-			    	}else if (this.piece.getColor().equals(pTwoColor)
-			    			&& 
-			    			((deltayOldYNewY > fromPointToLengthOfTwoSquare || deltaNewYOldY>fromPointToLengthOfTwoSquare 
-			    			|| deltaNewXOldX>fromPointToLengthOfTwoSquare || deltaOldXNewX>fromPointToEndOfOneSquareBack)
-		       	    		|| (this.piece.getPoint().y==oldCoord.y && (deltaOldXNewX > fromSquareStartToPoint || deltaNewXOldX>fromPointToLengthOfOneSquare))
-		       	    		|| (this.piece.getPoint().x==oldCoord.x))){
-			    		
-			    		this.piece.setPoint(oldCoord);
-		   	    		player();
-			    	}
-					
+					}
 				}
-					
+	
+				if (this.piece.getPoint().x < 0 || this.piece.getPoint().x  > this.finalBoardSize || this.piece.getPoint().y < 0 || this.piece.getPoint().y > this.finalBoardSize) {
+					this.piece.setPoint(oldCoord);
+					jumpRedRBlackL = false;	
+					player();	   
+				}else if (this.piece.getColor().equals(pOneColor) && 
+		    			((deltayOldYNewY > fromPointToEndOfOneSquareBack || deltaNewYOldY > fromPointToLengthOfTwoSquare 
+		    			|| deltaNewXOldX>fromPointToEndOfOneSquareBack || deltaOldXNewX > fromPointToLengthOfTwoSquare)
+	        	    	|| (this.piece.getPoint().y==oldCoord.y && (deltaOldXNewX>fromSquareStartToPoint || deltaNewXOldX>fromPointToLengthOfOneSquare))
+	        	    	|| (this.piece.getPoint().x==oldCoord.x))){
+		    		
+					this.piece.setPoint(oldCoord);
+		    		player();
+		    		
+		    		// Uses the conditions from the regular red piece to make the red piece move in the other direction.
+		    	}else if (this.piece.getColor().equals(pTwoColor)
+		    			&& 
+		    			((deltayOldYNewY > fromPointToLengthOfTwoSquare || deltaNewYOldY>fromPointToLengthOfTwoSquare 
+		    			|| deltaNewXOldX>fromPointToLengthOfTwoSquare || deltaOldXNewX>fromPointToEndOfOneSquareBack)
+	       	    		|| (this.piece.getPoint().y==oldCoord.y && (deltaOldXNewX > fromSquareStartToPoint || deltaNewXOldX>fromPointToLengthOfOneSquare))
+	       	    		|| (this.piece.getPoint().x==oldCoord.x))){
+		    		
+		    		this.piece.setPoint(oldCoord);
+	   	    		player();
+		    	}
+				searchBoard();
 				
-							
+			}
 			
 			else {
 				//The first condition makes sure that the piece can't move on top of another pieces.
@@ -294,26 +292,24 @@ public class MovePieces {
     	    		player();
     	    	//The forth condition makes first sure that the black piece can't move down and more than one row up,
         	    // then it makes sure that the piece can't move straight to the side, and finally it makes sure that the pieces don't go straight down. 
-    	    	} else if (this.piece.getColor().equals(pTwoColor) && 
+    	    	} else if ((this.piece.getColor().equals(pTwoColor) || this.piece.isKing == true) && 
     	    			((deltayOldYNewY > fromPointToEndOfOneSquareBack || deltaNewYOldY > fromPointToLengthOfOneSquare || deltaNewXOldX>fromPointToEndOfOneSquareBack || deltaOldXNewX > fromPointToLengthOfTwoSquare)
     	    			||(this.piece.getPoint().y==oldCoord.y && (deltaOldXNewX>fromSquareStartToPoint || deltaNewXOldX>fromPointToLengthOfOneSquare))
     	    			|| (this.piece.getPoint().x==oldCoord.x))) {
     	    		this.piece.setPoint(oldCoord); 
     	    		player();	
-    	    	
     	    	}
-				 	searchBoard();		
+					searchBoard();
+
 			}
-		 
-			if (this.piece.getColor().equals(pOneColor) 
-			&& this.piece.getPoint().y > finalBoardSize-squareDim){	
+		
+			if(this.piece.getColor().equals(pOneColor) 
+				&& this.piece.getPoint().y > finalBoardSize-squareDim){
 				this.piece.isKing = true;
-				
-			} else if  (this.piece.getColor().equals(pTwoColor) 
-			&& this.piece.getPoint().y < squareDim){
-				this.piece.isKing = true;
+			}else if(this.piece.getColor().equals(pTwoColor)
+					&& this.piece.getPoint().y < squareDim){
+				this.piece.isKing = true;	
 			}
-			
 			draw.repaintBoardPanel();
     	    return;  
 	}
@@ -371,7 +367,7 @@ public class MovePieces {
 							}
 						}
 					}
-				}
+				} 
 			}
 		}
 		
@@ -443,10 +439,11 @@ public class MovePieces {
 									}
 									}
 			 					}
-			 				}
-						}
+			 			}
+					}
 			}
 		}
+	
 	}
 	
 	
